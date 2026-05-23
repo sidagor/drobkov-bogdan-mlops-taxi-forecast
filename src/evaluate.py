@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import root_mean_squared_error
 from sklearn.model_selection import train_test_split
 
-from preprocess import prepare_data
+from src.preprocess import prepare_data
 
 
 def evaluate_model():

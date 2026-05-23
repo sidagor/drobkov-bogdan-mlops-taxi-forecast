@@ -20,7 +20,7 @@ from sklearn.ensemble import RandomForestRegressor
 
 from catboost import CatBoostRegressor
 
-from preprocess import prepare_data
+from src.preprocess import prepare_data
 
 
 def train_models():
