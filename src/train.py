@@ -3,6 +3,7 @@
 import joblib
 import mlflow
 import mlflow.sklearn
+import os
 
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
@@ -178,6 +179,8 @@ def train_models():
     print(f'Best RMSE: {best_rmse:.2f}')
 
     # Сохранение модели
+
+    os.makedirs("models", exist_ok=True)
 
     joblib.dump(
         best_model,
