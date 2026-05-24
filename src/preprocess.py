@@ -1,6 +1,7 @@
 # src/preprocess.py
 
 import pandas as pd
+import os
 
 
 def load_data(path):
@@ -25,7 +26,7 @@ def resample_data(data):
     Агрегация количества заказов по часу
     """
 
-    data = data.resample('1H').sum()
+    data = data.resample('1h').sum()
 
     return data
 
@@ -73,6 +74,11 @@ def save_processed_data(data, path):
     """
     Сохранение обработанных данных
     """
+
+    os.makedirs(
+        os.path.dirname(path),
+        exist_ok=True
+    )
 
     data.to_csv(path)
 
