@@ -185,6 +185,29 @@ MLflow использовался для:
 
 Запуск интерфейса: mlflow ui
 
+### MLflow Experiments
+
+![MLflow](reports/screen/эксперимент.png)
+
+### MLflow runs
+
+![MLflow](reports/screen/runs.png)
+
+### MLflow models
+
+![MLflow](reports/screen/randomforest.png)
+
+![MLflow](reports/screen/CatBoost.png)
+
+![MLflow](reports/screen/LinearRegression.png)
+
+### MLflow evaluate
+
+![MLflow](reports/screen/метрикалучшей.png)
+
+![MLflow](reports/screen/график.png)
+
+
 ## Docker
 
 Проект был контейнеризирован с помощью Docker, что обеспечило воспроизводимость окружения и упростило запуск проекта на различных системах.
@@ -213,7 +236,14 @@ CMD ["python", "-m", "src.train"]
 
 Сборка Docker-образа: docker build -t taxi-forecast .
 
+![Docker](reports/screen/dockerbuild.png)
+
+
 Запуск контейнера: docker run taxi-forecast
+
+![Docker](reports/screen/dockerrun.png)
+
+![Docker](reports/screen/dockercontatiner.png)
 
 ## CI/CD
 
@@ -232,3 +262,32 @@ Workflow расположен в: .github/workflows/ci.yml
 - Установка Python;
 - Установка зависимостей из requirements.txt;
 - Запуск тестов через pytest.
+
+### CI/CD Pipeline 
+
+![CI](reports/screen/ci.png)
+
+## Используемые Git-команды
+
+Проверка состояния файлов:
+
+```bash
+git status
+
+Добавление файлов
+
+```bash
+git add .
+
+Создание коммита:
+
+```bash
+git commit -m "Project update"
+
+Отправка изменений в удалённый репозиторий:
+
+```bash
+git push
+
+
+
