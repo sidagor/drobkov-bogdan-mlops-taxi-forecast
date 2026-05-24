@@ -187,25 +187,25 @@ MLflow использовался для:
 
 ### MLflow Experiments
 
-![MLflow](reports/screen/эксперимент.png)
+![MLflow](reports/screen/эксперимент.PNG)
 
 ### MLflow runs
 
-![MLflow](reports/screen/runs.png)
+![MLflow](reports/screen/runs.PNG)
 
 ### MLflow models
 
-![MLflow](reports/screen/randomforest.png)
+![MLflow](reports/screen/randomforest.PNG)
 
-![MLflow](reports/screen/CatBoost.png)
+![MLflow](reports/screen/CatBoost.PNG)
 
-![MLflow](reports/screen/LinearRegression.png)
+![MLflow](reports/screen/LinearRegression.PNG)
 
 ### MLflow evaluate
 
-![MLflow](reports/screen/метрикалучшей.png)
+![MLflow](reports/screen/метрикалучшей.PNG)
 
-![MLflow](reports/screen/график.png)
+![MLflow](reports/screen/график.PNG)
 
 
 ## Docker
@@ -236,14 +236,14 @@ CMD ["python", "-m", "src.train"]
 
 Сборка Docker-образа: docker build -t taxi-forecast .
 
-![Docker](reports/screen/dockerbuild.png)
+![Docker](reports/screen/dockerbuild.PNG)
 
 
 Запуск контейнера: docker run taxi-forecast
 
-![Docker](reports/screen/dockerrun.png)
+![Docker](reports/screen/dockerrun.PNG)
 
-![Docker](reports/screen/dockercontatiner.png)
+![Docker](reports/screen/dockercontatiner.PNG)
 
 ## CI/CD
 
@@ -265,7 +265,7 @@ Workflow расположен в: .github/workflows/ci.yml
 
 ### CI/CD Pipeline 
 
-![CI](reports/screen/ci.png)
+![CI](reports/screen/ci.PNG)
 
 ## Используемые Git-команды
 
