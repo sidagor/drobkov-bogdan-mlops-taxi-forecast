@@ -129,9 +129,9 @@ drobkov-bogdan-mlops-taxi-forecast/
 │   ├── preprocess.py             # ETL и feature engineering  
 │   ├── train.py                  # Обучение моделей и MLflow logging  
 │   └── evaluate.py               # Оценка модели и построение графиков  
-│
-├── tests/                        # Unit-тесты проекта  
-│   ├── test_model.py             # Тестирование обучения и модели  
+│  
+├── tests/                        # Unit-тесты проекта    
+│   ├── test_model.py             # Тестирование обучения и модели   
 │   └── test_preprocess.py        # Тестирование preprocessing pipeline  
 │  
 ├── .github/                      # Конфигурация GitHub Actions  
