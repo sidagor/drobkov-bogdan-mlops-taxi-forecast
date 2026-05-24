@@ -61,27 +61,8 @@ EDA: notebooks/EDA.ipynb
   
 ## Схема пайплайна проекта  
 
-Raw Data
-   ↓
-Preprocessing
-   ↓
-Feature Engineering
-   ↓
-Train/Test Split
-   ↓
-Model Training
-   ↓
-Hyperparameter Tuning
-   ↓
-Model Evaluation
-   ↓
-MLflow Logging
-   ↓
-Model Saving
-   ↓
-Testing & CI/CD
-   ↓
-Docker Container
+Raw Data - Preprocessing - Feature Engineering - Train/Test Split - Model Training - Hyperparameter Tuning - Model Evaluation - MLflow Logging -Model Saving
+- Testing & CI/CD - Docker Container
 
 ## ETL-процесс
 
@@ -130,36 +111,36 @@ Docker Container
   
 ## Структура проекта
 
-drobkov-bogdan-mlops-taxi-forecast/
+drobkov-bogdan-mlops-taxi-forecast/  
+│  
+├── data/                         # Директория с данными проекта  
+│   ├── raw/                      # Исходные необработанные данные  
+│   └── processed/                # Подготовленные данные после ETL  
+│  
+├── models/                       # Сохранённые обученные модели  
+│  
+├── notebooks/                    # EDA   
+│  
+├── reports/                      # Отчёты и визуализации  
+│   └── figures/                  # Графики и изображения модели  
+│  
+├── src/                          # Основной исходный код проекта  
+│   ├── __init__.py               # Инициализация Python-пакета  
+│   ├── preprocess.py             # ETL и feature engineering  
+│   ├── train.py                  # Обучение моделей и MLflow logging  
+│   └── evaluate.py               # Оценка модели и построение графиков  
 │
-├── data/                         # Директория с данными проекта
-│   ├── raw/                      # Исходные необработанные данные
-│   └── processed/                # Подготовленные данные после ETL
-│
-├── models/                       # Сохранённые обученные модели
-│
-├── notebooks/                    # EDA 
-│
-├── reports/                      # Отчёты и визуализации
-│   └── figures/                  # Графики и изображения модели
-│
-├── src/                          # Основной исходный код проекта
-│   ├── __init__.py               # Инициализация Python-пакета
-│   ├── preprocess.py             # ETL и feature engineering
-│   ├── train.py                  # Обучение моделей и MLflow logging
-│   └── evaluate.py               # Оценка модели и построение графиков
-│
-├── tests/                        # Unit-тесты проекта
-│   ├── test_model.py             # Тестирование обучения и модели
-│   └── test_preprocess.py        # Тестирование preprocessing pipeline
-│
-├── .github/                      # Конфигурация GitHub Actions
-│   └── workflows/
-│       └── ci.yml                # CI pipeline для автоматического тестирования
-│
-├── Dockerfile                    # Конфигурация Docker-контейнера
-├── requirements.txt              # Список зависимостей Python
-├── .gitignore                    # Исключения файлов для Git
+├── tests/                        # Unit-тесты проекта  
+│   ├── test_model.py             # Тестирование обучения и модели  
+│   └── test_preprocess.py        # Тестирование preprocessing pipeline  
+│  
+├── .github/                      # Конфигурация GitHub Actions  
+│   └── workflows/  
+│       └── ci.yml                # CI pipeline для автоматического тестирования  
+│  
+├── Dockerfile                    # Конфигурация Docker-контейнера  
+├── requirements.txt              # Список зависимостей Python  
+├── .gitignore                    # Исключения файлов для Git  
 └── README.md                     # Документация проекта
 
 ## Тестирование
