@@ -203,7 +203,7 @@ MLflow использовался для:
 
 ### MLflow evaluate
 
-![MLflow](reports/screen/метрикалучшей.PNG)
+![MLflow](reports/screen/метрика лучшей.PNG)
 
 ![MLflow](reports/screen/график.PNG)
 
