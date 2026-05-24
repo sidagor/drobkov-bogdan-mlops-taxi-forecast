@@ -44,6 +44,13 @@ def train_models():
     print(f'Train size: {len(train)}')
     print(f'Test size: {len(test)}')
 
+    os.makedirs("models", exist_ok=True)
+
+    os.makedirs(
+        "catboost_info",
+        exist_ok=True
+    )
+
     # Features / Target
 
     features_train = train.drop('num_orders', axis=1)
@@ -79,7 +86,9 @@ def train_models():
         'CatBoost': {
             'model': CatBoostRegressor(
                 verbose=0,
-                random_state=42
+                random_state=42,
+                train_dir="catboost_info",
+                allow_writing_files=True
             ),
 
             'params': {
@@ -179,9 +188,7 @@ def train_models():
     print(f'Best RMSE: {best_rmse:.2f}')
 
     # Сохранение модели
-
-    os.makedirs("models", exist_ok=True)
-
+    
     joblib.dump(
         best_model,
         'models/best_model.pkl'

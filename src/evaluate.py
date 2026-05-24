@@ -1,6 +1,8 @@
 # src/evaluate.py
 
+import os
 import joblib
+import mlflow
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -11,6 +13,13 @@ from src.preprocess import prepare_data
 
 
 def evaluate_model():
+
+    # Создание папок
+
+    os.makedirs(
+        'reports/figures',
+        exist_ok=True
+    )
 
     # Загрузка данных
 
@@ -56,70 +65,102 @@ def evaluate_model():
 
     print(f'RMSE: {rmse:.2f}')
 
-    # График фактических и предсказанных значений
+    # MLflow logging
 
-    plt.figure(figsize=(15, 6))
+    with mlflow.start_run(run_name='evaluation'):
 
-    plt.plot(
-        target_test.index,
-        target_test,
-        label='Real'
-    )
-
-    plt.plot(
-        target_test.index,
-        predictions,
-        label='Predictions'
-    )
-
-    plt.title('Taxi Orders Forecast')
-
-    plt.xlabel('Date')
-
-    plt.ylabel('Orders')
-
-    plt.legend()
-
-    plt.tight_layout()
-
-    plt.savefig(
-        'reports/figures/predictions.png'
-    )
-
-    plt.show()
-
-    # Feature importance
-
-    model_step = model.named_steps['model']
-
-    if hasattr(model_step, 'feature_importances_'):
-
-        importance = pd.DataFrame({
-            'feature': features_test.columns,
-            'importance': model_step.feature_importances_
-        })
-
-        importance = importance.sort_values(
-            by='importance',
-            ascending=False
+        mlflow.log_metric(
+            'rmse',
+            rmse
         )
 
-        plt.figure(figsize=(10, 8))
+        # График предсказаний
 
-        plt.barh(
-            importance['feature'][:15],
-            importance['importance'][:15]
+        plt.figure(figsize=(15, 6))
+
+        plt.plot(
+            target_test.index,
+            target_test,
+            label='Real'
         )
 
-        plt.title('Feature Importance')
+        plt.plot(
+            target_test.index,
+            predictions,
+            label='Predictions'
+        )
+
+        plt.title('Taxi Orders Forecast')
+
+        plt.xlabel('Date')
+
+        plt.ylabel('Orders')
+
+        plt.legend()
 
         plt.tight_layout()
 
+        predictions_path = (
+            'reports/figures/predictions.png'
+        )
+
         plt.savefig(
-            'reports/figures/feature_importance.png'
+            predictions_path
+        )
+
+        mlflow.log_artifact(
+            predictions_path
         )
 
         plt.show()
+
+        # Feature importance
+
+        model_step = model.named_steps['model']
+
+        if hasattr(
+            model_step,
+            'feature_importances_'
+        ):
+
+            importance = pd.DataFrame({
+                'feature': features_test.columns,
+                'importance': (
+                    model_step.feature_importances_
+                )
+            })
+
+            importance = importance.sort_values(
+                by='importance',
+                ascending=False
+            )
+
+            plt.figure(figsize=(10, 8))
+
+            plt.barh(
+                importance['feature'][:15],
+                importance['importance'][:15]
+            )
+
+            plt.title(
+                'Feature Importance'
+            )
+
+            plt.tight_layout()
+
+            importance_path = (
+                'reports/figures/feature_importance.png'
+            )
+
+            plt.savefig(
+                importance_path
+            )
+
+            mlflow.log_artifact(
+                importance_path
+            )
+
+            plt.show()
 
 
 if __name__ == '__main__':
