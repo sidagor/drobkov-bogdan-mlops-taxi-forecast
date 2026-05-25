@@ -61,8 +61,7 @@ EDA: notebooks/EDA.ipynb
   
 ## Схема пайплайна проекта  
 
-Raw Data - Preprocessing - Feature Engineering - Train/Test Split - Model Training - Hyperparameter Tuning - Model Evaluation - MLflow Logging -Model Saving
-- Testing & CI/CD - Docker Container
+Raw Data - Preprocessing - Feature Engineering - Train/Test Split - Model Training - Hyperparameter Tuning - Model Evaluation - MLflow Logging -Model Saving - Testing & CI/CD - Docker Container
 
 ## ETL-процесс
 
