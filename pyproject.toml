@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "drobkov-bogdan-mlops-taxi-forecast"
+version = "0.1.0"
+description = "MLOps taxi order forecasting"
+authors = ["Bogdan Drobkov <drobkov@example.com>"]
+readme = "README.md"
+packages = [{ include = "src" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pandas = "*"
+numpy = "*"
+scikit-learn = "*"
+matplotlib = "*"
+seaborn = "*"
+catboost = "*"
+mlflow = "*"
+joblib = "*"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+pre-commit = "*"
+ruff = "*"
+nbqa = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
