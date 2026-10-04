@@ -1,7 +1,8 @@
 # src/preprocess.py
 
-import pandas as pd
 import os
+
+import pandas as pd
 
 
 def load_data(path):
@@ -9,11 +10,7 @@ def load_data(path):
     Загрузка исходных данных
     """
 
-    data = pd.read_csv(
-        path,
-        index_col=[0],
-        parse_dates=[0]
-    )
+    data = pd.read_csv(path, index_col=[0], parse_dates=[0])
 
     # Сортировка по времени
     data = data.sort_index()
@@ -26,7 +23,7 @@ def resample_data(data):
     Агрегация количества заказов по часу
     """
 
-    data = data.resample('1h').sum()
+    data = data.resample("1h").sum()
 
     return data
 
@@ -37,32 +34,21 @@ def create_features(data):
     """
 
     # Календарные признаки
-    data['dayofweek'] = data.index.dayofweek
-    data['hour'] = data.index.hour
+    data["dayofweek"] = data.index.dayofweek
+    data["hour"] = data.index.hour
 
     # One-Hot Encoding часов
-    data = data.join(
-        pd.get_dummies(
-            data['hour'],
-            drop_first=True,
-            prefix='hour'
-        )
-    )
+    data = data.join(pd.get_dummies(data["hour"], drop_first=True, prefix="hour"))
 
     # Удаляем исходный признак hour
-    data.drop('hour', axis=1, inplace=True)
+    data.drop("hour", axis=1, inplace=True)
 
     # Лаговые признаки
     for lag in [1, 23, 24, 48, 72, 168]:
-        data[f'lag_{lag}'] = data['num_orders'].shift(lag)
+        data[f"lag_{lag}"] = data["num_orders"].shift(lag)
 
     # Скользящее среднее за 24 часа
-    data['rolling_mean'] = (
-        data['num_orders']
-        .shift()
-        .rolling(24)
-        .mean()
-    )
+    data["rolling_mean"] = data["num_orders"].shift().rolling(24).mean()
 
     # Удаление пропусков
     data = data.dropna()
@@ -75,10 +61,7 @@ def save_processed_data(data, path):
     Сохранение обработанных данных
     """
 
-    os.makedirs(
-        os.path.dirname(path),
-        exist_ok=True
-    )
+    os.makedirs(os.path.dirname(path), exist_ok=True)
 
     data.to_csv(path)
 
@@ -103,13 +86,11 @@ def prepare_data(input_path, output_path=None):
     return data
 
 
-if __name__ == '__main__':
-
+if __name__ == "__main__":
     data = prepare_data(
-        input_path='data/raw/taxi.csv',
-        output_path='data/processed/taxi_features.csv'
+        input_path="data/raw/taxi.csv", output_path="data/processed/taxi_features.csv"
     )
 
     print(data.head())
 
-    print('\nShape:', data.shape)
+    print("\nShape:", data.shape)
