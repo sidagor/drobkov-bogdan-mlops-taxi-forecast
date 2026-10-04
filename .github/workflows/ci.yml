@@ -7,14 +7,10 @@ on:
 jobs:
 
   test:
-
     runs-on: ubuntu-latest
-
     env:
       PYTHONPATH: .
-
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -34,3 +30,15 @@ jobs:
 
       - name: Run tests
         run: poetry run pytest
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t taxi-forecast .
+
+      - name: Run Docker container
+        run: docker run taxi-forecast
