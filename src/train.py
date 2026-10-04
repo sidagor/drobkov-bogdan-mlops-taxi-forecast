@@ -171,7 +171,11 @@ def train_models():
 
             mlflow.sklearn.log_model(
                 model,
-                'model'
+                name='model',
+                skops_trusted_types=[
+                    'sklearn.tree._tree.Tree',
+                    'catboost.core.CatBoostRegressor',
+                ]
             )
 
             # Выбор лучшей модели
