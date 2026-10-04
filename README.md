@@ -17,21 +17,29 @@
 
 ## Запуск проекта
 
-git clone <repo_url>
+### Требования
 
+- Python 3.11+
+- [Poetry](https://python-poetry.org/docs/#installation) (для управления зависимостями)
+
+### Установка
+
+```bash
+git clone https://github.com/sidagor/drobkov-bogdan-mlops-taxi-forecast.git
 cd drobkov-bogdan-mlops-taxi-forecast
+poetry install
+```
 
-python -m venv .venv
+Обучение моделей:
+```bash
+poetry run python -m src.train
+```
 
-source .venv/bin/activate
 
-Для Windows: .venv\Scripts\activate
-
-Установка зависимостей: pip install -r requirements.txt
-
-Обучение моделей: python -m src.train
-
-Оценка модели: python -m src.evaluate
+Оценка модели:
+```bash
+poetry run python -m src.evaluate
+```
 
 ## Разведочный анализ данных (EDA)
 
@@ -130,6 +138,9 @@ Docker Container
 
 ## Структура проекта
 
+## Структура проекта
+
+```
 drobkov-bogdan-mlops-taxi-forecast/
 │
 ├── data/                         # Директория с данными проекта
@@ -155,12 +166,15 @@ drobkov-bogdan-mlops-taxi-forecast/
 │
 ├── .github/                      # Конфигурация GitHub Actions
 │   └── workflows/
-│       └── ci.yml                # CI pipeline для автоматического тестирования
+│       └── ci.yml                # CI pipeline: тесты, pre-commit, Docker
 │
+├── .pre-commit-config.yaml       # Конфигурация pre-commit hooks
+├── pyproject.toml                # Зависимости и настройки Poetry / Ruff / pytest
+├── poetry.lock                   # Зафиксированные версии зависимостей
 ├── Dockerfile                    # Конфигурация Docker-контейнера
-├── requirements.txt              # Список зависимостей Python
 ├── .gitignore                    # Исключения файлов для Git
 └── README.md                     # Документация проекта
+```
 
 ## Тестирование
 
@@ -172,7 +186,10 @@ drobkov-bogdan-mlops-taxi-forecast/
 - проверка сохранения модели;
 - проверка размера предсказаний.
 
-Запуск тестов: python -m pytest
+Запуск тестов:
+```bash
+poetry run pytest
+```
 
 ## MLflow
 
@@ -187,48 +204,80 @@ MLflow использовался для:
 
 ## Docker
 
-Проект был контейнеризирован с помощью Docker, что обеспечило воспроизводимость окружения и упростило запуск проекта на различных системах.
+Проект контейнеризирован с помощью Docker, что обеспечивает воспроизводимость окружения и упрощает запуск проекта на любых системах. Зависимости устанавливаются через Poetry из `pyproject.toml` и `poetry.lock`.
 
-Dockerfile
+### Dockerfile
 
-FROM python:3.11-slim
+```dockerfile
+FROM python:3.13-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY pyproject.toml poetry.lock ./
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir poetry==1.8.3 \
+    && poetry config virtualenvs.create false \
+    && poetry install --no-interaction --no-ansi --no-root
 
 COPY . .
 
+RUN poetry install --no-interaction --no-ansi
+
 CMD ["python", "-m", "src.train"]
+```
 
-Описание команд Dockerfile
-- FROM python:3.11-slim — использование облегчённого Python-образа;
-- WORKDIR /app — установка рабочей директории контейнера;
-- COPY requirements.txt . — копирование файла зависимостей;
-- RUN pip install ... — установка библиотек проекта;
-- COPY . . — копирование исходного кода;
-- CMD [...] — запуск обучения модели при старте контейнера.
+### Описание команд Dockerfile
 
-Сборка Docker-образа: docker build -t taxi-forecast .
+- `FROM python:3.13-slim` — облегчённый Python-образ версии 3.13;
+- `WORKDIR /app` — установка рабочей директории контейнера;
+- `COPY pyproject.toml poetry.lock ./` — копирование файлов зависимостей для кэширования слоёв;
+- `RUN pip install poetry ...` — установка Poetry и зависимостей проекта;
+- `poetry config virtualenvs.create false` — установка пакетов в системный Python (venv в контейнере не нужен);
+- `poetry install --no-root` — установка только зависимостей, без самого проекта;
+- `COPY . .` — копирование исходного кода;
+- `RUN poetry install` — установка проекта (нужно для импортов `from src....`);
+- `CMD [...]` — запуск обучения модели при старте контейнера.
 
-Запуск контейнера: docker run taxi-forecast
+### Сборка и запуск
+
+Сборка Docker-образа:
+
+```bash
+docker build -t taxi-forecast .
+```
+
+Запуск контейнера:
+
+```bash
+docker run taxi-forecast
+```
 
 ## CI/CD
 
 В проекте реализована система непрерывной интеграции (CI) с использованием GitHub Actions.
 
-При каждом push или pull request автоматически выполняются:
+При каждом `push` и `pull request` автоматически выполняются:
 
-- установка зависимостей;
-- запуск тестов;
-- проверка корректности ML-пайплайна.
+- установка Poetry и зависимостей из `poetry.lock`;
+- прогон pre-commit hooks (Ruff, nbqa-ruff, poetry-check и др.);
+- запуск тестов через pytest;
+- сборка Docker-образа и запуск контейнера.
 
-Workflow расположен в: .github/workflows/ci.yml
+Workflow расположен в: `.github/workflows/ci.yml`
 
-Этапы CI-пайплайна
-- Клонирование репозитория;
-- Установка Python;
-- Установка зависимостей из requirements.txt;
-- Запуск тестов через pytest.
+### Этапы CI-пайплайна
+
+Job `test`:
+
+1. Клонирование репозитория;
+2. Установка Python 3.13;
+3. Установка Poetry;
+4. Установка зависимостей (`poetry install`);
+5. Прогон pre-commit на всех файлах;
+6. Запуск тестов (`poetry run pytest`).
+
+Job `docker`:
+
+1. Клонирование репозитория;
+2. Сборка Docker-образа;
+3. Запуск контейнера (проверка, что обучение работает внутри Docker).
